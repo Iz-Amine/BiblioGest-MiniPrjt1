@@ -17,6 +17,9 @@ public partial class LivreEditWindow : Window
         Livre = livre ?? new Livre();
         WindowTitle = IsNewBook ? "Ajouter un livre" : "Modifier un livre";
         
+        // Charger les catégories
+        CategorieComboBox.ItemsSource = App.DbContext.Categories.OrderBy(c => c.Nom).ToList();
+        
         DataContext = this;
     }
 

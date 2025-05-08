@@ -9,49 +9,96 @@
       Title="Gestion des Livres">
 
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="SearchBoxStyle" TargetType="TextBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Grid>
+                                <TextBox Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Background="{TemplateBinding Background}"
+                                         BorderBrush="{TemplateBinding BorderBrush}"
+                                         BorderThickness="{TemplateBinding BorderThickness}"
+                                         Padding="{TemplateBinding Padding}"/>
+                                <TextBlock Text="Rechercher par titre, auteur ou ISBN..."
+                                         Foreground="Gray"
+                                         Margin="5,0,0,0"
+                                         VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=TextBox}}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- En-tête -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Gestion des Livres" 
-                     FontSize="24" 
-                     FontWeight="Bold" 
-                     Margin="0,0,0,10"/>
+        <TextBlock Grid.Row="0" 
+                   Text="Gestion des Livres" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,10"/>
+        
+        <!-- Barre de filtres -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <!-- Barre de recherche -->
+            <TextBox Grid.Column="0" 
+                     x:Name="SearchBox"
+                     Margin="0,0,10,0"
+                     Padding="5"
+                     Style="{StaticResource SearchBoxStyle}"
+                     TextChanged="SearchBox_TextChanged"/>
+            
+            <!-- Filtre par catégorie -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                <TextBlock Text="Catégorie :" 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,5,0"/>
+                <ComboBox x:Name="CategorieComboBox" 
+                          Width="150"
+                          SelectionChanged="CategorieComboBox_SelectionChanged"
+                          DisplayMemberPath="Nom"/>
+            </StackPanel>
 
-                <!-- Barre de recherche -->
-                <TextBox Grid.Column="0" 
-                         x:Name="SearchBox"
-                         Margin="0,0,10,0"
-                         Padding="5"
-                         TextChanged="SearchBox_TextChanged"/>
+            <!-- Bouton Ajouter -->
+            <Button Grid.Column="2" 
+                    Content="Ajouter un livre" 
+                    Padding="10,5"
+                    Margin="0,0,10,0"
+                    Click="AddBook_Click"/>
 
-                <!-- Bouton Ajouter -->
-                <Button Grid.Column="1" 
-                        Content="Ajouter un livre" 
-                        Padding="10,5"
-                        Margin="0,0,10,0"
-                        Click="AddBook_Click"/>
-
-                <!-- Bouton Supprimer -->
-                <Button Grid.Column="2" 
-                        Content="Supprimer" 
-                        Padding="10,5"
-                        Click="DeleteBook_Click"/>
-            </Grid>
-        </StackPanel>
+            <!-- Bouton Supprimer -->
+            <Button Grid.Column="3" 
+                    Content="Supprimer" 
+                    Padding="10,5"
+                    Click="DeleteBook_Click"/>
+        </Grid>
 
         <!-- Liste des livres -->
-        <DataGrid Grid.Row="1" 
+        <DataGrid Grid.Row="2" 
                   x:Name="LivresGrid"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
@@ -60,10 +107,11 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="120"/>
                 <DataGridTextColumn Header="Titre" Binding="{Binding Titre}" Width="*"/>
-                <DataGridTextColumn Header="Auteur" Binding="{Binding Auteur}" Width="150"/>
-                <DataGridTextColumn Header="Éditeur" Binding="{Binding Editeur}" Width="150"/>
+                <DataGridTextColumn Header="Auteur" Binding="{Binding Auteur}" Width="*"/>
+                <DataGridTextColumn Header="Éditeur" Binding="{Binding Editeur}" Width="*"/>
                 <DataGridTextColumn Header="Année" Binding="{Binding AnneePublication}" Width="80"/>
-                <DataGridCheckBoxColumn Header="Disponible" Binding="{Binding Disponible}" Width="80"/>
+                <DataGridTextColumn Header="Catégorie" Binding="{Binding Categorie.Nom}" Width="*"/>
+                <DataGridCheckBoxColumn Header="Disponible" Binding="{Binding Disponible}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

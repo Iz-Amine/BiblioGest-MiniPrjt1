@@ -34,6 +34,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- ISBN -->
@@ -86,12 +87,23 @@
                          Text="{Binding Livre.AnneePublication, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0,0,0,10"/>
 
-                <!-- Disponible -->
+                <!-- Catégorie -->
                 <TextBlock Grid.Row="5" Grid.Column="0" 
+                           Text="Catégorie :" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,10"/>
+                <ComboBox Grid.Row="5" Grid.Column="1" 
+                          x:Name="CategorieComboBox"
+                          DisplayMemberPath="Nom"
+                          SelectedItem="{Binding Livre.Categorie}"
+                          Margin="0,0,0,10"/>
+
+                <!-- Disponible -->
+                <TextBlock Grid.Row="6" Grid.Column="0" 
                            Text="Disponible :" 
                            VerticalAlignment="Center"
                            Margin="0,0,10,10"/>
-                <CheckBox Grid.Row="5" Grid.Column="1" 
+                <CheckBox Grid.Row="6" Grid.Column="1" 
                           x:Name="DisponibleCheckBox"
                           IsChecked="{Binding Livre.Disponible}"
                           VerticalAlignment="Center"

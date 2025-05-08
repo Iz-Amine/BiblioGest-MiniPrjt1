@@ -63,6 +63,25 @@ public partial class MainWindow : Window
 
     private void NavigateToStatistiques(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("La page des statistiques sera disponible bientôt.");
+        try
+        {
+            MainFrame.Navigate(new Pages.StatistiquesPage());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void NavigateToCategories(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            MainFrame.Navigate(new CategoriesPage());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }
