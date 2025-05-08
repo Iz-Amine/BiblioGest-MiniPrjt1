@@ -1,0 +1,68 @@
+﻿using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using BiblioGest.Pages;
+
+namespace BiblioGest;
+
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+        // Naviguer vers la page des livres par défaut
+        NavigateToLivres(null, null);
+    }
+
+    private void NavigateToLivres(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            MainFrame.Navigate(new Pages.LivresPage());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void NavigateToAdherents(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            MainFrame.Navigate(new Pages.AdherentsPage());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void NavigateToEmprunts(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            MainFrame.Navigate(new EmpruntsPage());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void NavigateToStatistiques(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show("La page des statistiques sera disponible bientôt.");
+    }
+}

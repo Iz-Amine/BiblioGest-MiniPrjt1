@@ -1,0 +1,69 @@
+<Page x:Class="BiblioGest.Pages.EmpruntsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BiblioGest.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Gestion des Emprunts">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- En-tête -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Gestion des Emprunts" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Margin="0,0,0,10"/>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Barre de recherche -->
+                <TextBox Grid.Column="0" 
+                         x:Name="SearchBox"
+                         Margin="0,0,10,0"
+                         Padding="5"
+                         TextChanged="SearchBox_TextChanged"/>
+
+                <!-- Bouton Ajouter -->
+                <Button Grid.Column="1" 
+                        Content="Nouvel emprunt" 
+                        Padding="10,5"
+                        Margin="0,0,10,0"
+                        Click="AddEmprunt_Click"/>
+
+                <!-- Bouton Supprimer -->
+                <Button Grid.Column="2" 
+                        Content="Supprimer" 
+                        Padding="10,5"
+                        Click="DeleteEmprunt_Click"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- Liste des emprunts -->
+        <DataGrid Grid.Row="1" 
+                  x:Name="EmpruntsGrid"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  SelectionChanged="EmpruntsGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Livre" Binding="{Binding Livre.Titre}" Width="*"/>
+                <DataGridTextColumn Header="Adhérent" Binding="{Binding Adherent.NomComplet}" Width="*"/>
+                <DataGridTextColumn Header="Date d'emprunt" Binding="{Binding DateEmprunt, StringFormat=d}" Width="120"/>
+                <DataGridTextColumn Header="Date de retour" Binding="{Binding DateRetour, StringFormat=d}" Width="120"/>
+                <DataGridTextColumn Header="Statut" Binding="{Binding Statut}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page> 
