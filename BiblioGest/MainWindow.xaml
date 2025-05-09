@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BiblioGest"
         mc:Ignorable="d"
         Title="BiblioGest - Gestion de Bibliothèque" Height="650" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     
     <Window.Resources>
         <Style x:Key="NavButton" TargetType="Button">
@@ -100,9 +101,20 @@
         </Border>
 
         <!-- Content Area -->
-        <Frame x:Name="MainFrame" 
-               Grid.Column="1" 
-               NavigationUIVisibility="Hidden"
-               Margin="20"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Background="#FF2C3E50" Padding="10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Déconnexion 🚪" Click="LogoutButton_Click" Background="Transparent" Foreground="White" BorderThickness="0" Padding="10,5"/>
+                </StackPanel>
+            </Border>
+            <Frame x:Name="MainFrame" 
+                   Grid.Row="1" 
+                   NavigationUIVisibility="Hidden"
+                   Margin="20"/>
+        </Grid>
     </Grid>
 </Window>

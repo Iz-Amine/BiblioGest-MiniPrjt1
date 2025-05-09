@@ -49,12 +49,16 @@ public partial class App : Application
 
             DbContext.Database.EnsureCreated();
 
-            MessageBox.Show($"Base de données initialisée avec succès : {dbPath}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show($"Base de données initialisée avec succès : {dbPath}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Erreur lors de l'initialisation de la base de données : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        // Afficher la fenêtre de connexion
+        var loginWindow = new Windows.LoginWindow();
+        loginWindow.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

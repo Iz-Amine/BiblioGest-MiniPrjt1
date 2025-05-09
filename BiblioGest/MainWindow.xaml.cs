@@ -84,4 +84,11 @@ public partial class MainWindow : Window
             MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
+    private void LogoutButton_Click(object sender, RoutedEventArgs e)
+    {
+        var loginWindow = new Windows.LoginWindow();
+        loginWindow.Show();
+        this.Close();
+    }
 }
