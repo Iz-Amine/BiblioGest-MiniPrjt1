@@ -13,6 +13,7 @@ public partial class EmpruntsPage : Page
     private int _currentPage = 1;
     private int _pageSize = 10;
     private int _totalPages = 1;
+    private string _selectedStatut = "Tous";
 
     public EmpruntsPage()
     {
@@ -45,13 +46,24 @@ public partial class EmpruntsPage : Page
                                         (e.Adherent != null && e.Adherent.Nom != null && e.Adherent.Nom.ToLower().Contains(searchText)) ||
                                         (e.Adherent != null && e.Adherent.Prenom != null && e.Adherent.Prenom.ToLower().Contains(searchText)));
             }
-            int totalItems = query.Count();
+            // Charger en mémoire pour filtrer sur EstEnRetard
+            var empruntsList = query.OrderByDescending(e => e.DateEmprunt).ToList();
+            if (_selectedStatut != "Tous")
+            {
+                if (_selectedStatut == "En cours")
+                    empruntsList = empruntsList.Where(e => e.DateRetour == null && !e.EstEnRetard).ToList();
+                else if (_selectedStatut == "En retard")
+                    empruntsList = empruntsList.Where(e => e.DateRetour == null && e.EstEnRetard).ToList();
+                else if (_selectedStatut == "Rendu")
+                    empruntsList = empruntsList.Where(e => e.DateRetour != null).ToList();
+            }
+            int totalItems = empruntsList.Count;
             UpdatePagination(totalItems);
-            var emprunts = query.OrderByDescending(e => e.DateEmprunt)
-                                .Skip((_currentPage - 1) * _pageSize)
-                                .Take(_pageSize)
-                                .ToList();
-            EmpruntsGrid.ItemsSource = emprunts;
+            var empruntsPage = empruntsList
+                .Skip((_currentPage - 1) * _pageSize)
+                .Take(_pageSize)
+                .ToList();
+            EmpruntsGrid.ItemsSource = empruntsPage;
         }
         catch (Exception ex)
         {
@@ -209,6 +221,15 @@ public partial class EmpruntsPage : Page
         if (_currentPage < _totalPages)
         {
             _currentPage++;
+            LoadEmprunts();
+        }
+    }
+
+    private void StatutComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (StatutComboBox.SelectedItem is ComboBoxItem item)
+        {
+            _selectedStatut = item.Content.ToString();
             LoadEmprunts();
         }
     }

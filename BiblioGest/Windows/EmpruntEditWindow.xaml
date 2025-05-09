@@ -32,48 +32,56 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
+                <!-- ISBN / Code-barres -->
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="ISBN / Code-barres :" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBox x:Name="IsbnTextBox" Width="180" Margin="0,0,5,0"/>
+                    <Button Content="Rechercher" Click="SearchByIsbn_Click"/>
+                </StackPanel>
+
                 <!-- Livre -->
-                <TextBlock Grid.Row="0" Grid.Column="0" 
+                <TextBlock Grid.Row="1" Grid.Column="0" 
                            Text="Livre :" 
                            VerticalAlignment="Center"
                            Margin="0,0,10,10"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" 
+                <ComboBox Grid.Row="1" Grid.Column="1" 
                           x:Name="LivreComboBox"
                           DisplayMemberPath="Titre"
                           SelectedItem="{Binding Emprunt.Livre}"
                           Margin="0,0,0,10"/>
 
                 <!-- Adhérent -->
-                <TextBlock Grid.Row="1" Grid.Column="0" 
+                <TextBlock Grid.Row="2" Grid.Column="0" 
                            Text="Adhérent :" 
                            VerticalAlignment="Center"
                            Margin="0,0,10,10"/>
-                <ComboBox Grid.Row="1" Grid.Column="1" 
+                <ComboBox Grid.Row="2" Grid.Column="1" 
                           x:Name="AdherentComboBox"
                           DisplayMemberPath="NomComplet"
                           SelectedItem="{Binding Emprunt.Adherent}"
                           Margin="0,0,0,10"/>
 
                 <!-- Date d'emprunt -->
-                <TextBlock Grid.Row="2" Grid.Column="0" 
+                <TextBlock Grid.Row="3" Grid.Column="0" 
                            Text="Date d'emprunt :" 
                            VerticalAlignment="Center"
                            Margin="0,0,10,10"/>
-                <DatePicker Grid.Row="2" Grid.Column="1" 
+                <DatePicker Grid.Row="3" Grid.Column="1" 
                            x:Name="DateEmpruntPicker"
                            SelectedDate="{Binding Emprunt.DateEmprunt}"
                            Margin="0,0,0,10"/>
 
-                <!-- Date de retour -->
-                <TextBlock Grid.Row="3" Grid.Column="0" 
-                           Text="Date de retour :" 
+                <!-- Date de retour prévue -->
+                <TextBlock Grid.Row="4" Grid.Column="0" 
+                           Text="Date retour prévue :" 
                            VerticalAlignment="Center"
                            Margin="0,0,10,10"/>
-                <DatePicker Grid.Row="3" Grid.Column="1" 
-                           x:Name="DateRetourPicker"
-                           SelectedDate="{Binding Emprunt.DateRetour}"
+                <DatePicker Grid.Row="4" Grid.Column="1" 
+                           x:Name="DateRetourPrevuePicker"
+                           SelectedDate="{Binding Emprunt.DateRetourPrevue}"
                            Margin="0,0,0,10"/>
             </Grid>
         </StackPanel>

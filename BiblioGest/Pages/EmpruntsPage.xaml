@@ -26,6 +26,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Barre de recherche -->
@@ -35,15 +36,26 @@
                          Padding="5"
                          TextChanged="SearchBox_TextChanged"/>
 
+                <!-- Filtre par statut -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Statut :" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="StatutComboBox" Width="120" SelectionChanged="StatutComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Tous"/>
+                        <ComboBoxItem Content="En cours"/>
+                        <ComboBoxItem Content="En retard"/>
+                        <ComboBoxItem Content="Rendu"/>
+                    </ComboBox>
+                </StackPanel>
+
                 <!-- Bouton Ajouter -->
-                <Button Grid.Column="1" 
+                <Button Grid.Column="2" 
                         Content="Nouvel emprunt" 
                         Padding="10,5"
                         Margin="0,0,10,0"
                         Click="AddEmprunt_Click"/>
 
                 <!-- Bouton Supprimer -->
-                <Button Grid.Column="2" 
+                <Button Grid.Column="3" 
                         Content="Supprimer" 
                         Padding="10,5"
                         Click="DeleteEmprunt_Click"/>
@@ -61,6 +73,7 @@
                 <DataGridTextColumn Header="Livre" Binding="{Binding Livre.Titre}" Width="*"/>
                 <DataGridTextColumn Header="Adhérent" Binding="{Binding Adherent.NomComplet}" Width="*"/>
                 <DataGridTextColumn Header="Date d'emprunt" Binding="{Binding DateEmprunt, StringFormat=d}" Width="120"/>
+                <DataGridTextColumn Header="Date retour prévue" Binding="{Binding DateRetourPrevue, StringFormat=d}" Width="120"/>
                 <DataGridTextColumn Header="Date de retour" Binding="{Binding DateRetour, StringFormat=d}" Width="120"/>
                 <DataGridTextColumn Header="Statut" Binding="{Binding Statut}" Width="100"/>
             </DataGrid.Columns>

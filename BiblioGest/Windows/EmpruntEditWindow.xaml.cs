@@ -75,4 +75,23 @@ public partial class EmpruntEditWindow : Window
         DialogResult = false;
         Close();
     }
+
+    private void SearchByIsbn_Click(object sender, RoutedEventArgs e)
+    {
+        var isbn = IsbnTextBox.Text.Trim();
+        if (string.IsNullOrEmpty(isbn))
+        {
+            MessageBox.Show("Veuillez saisir un ISBN.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+        var livre = App.DbContext.Livres.FirstOrDefault(l => l.ISBN == isbn);
+        if (livre != null)
+        {
+            LivreComboBox.SelectedItem = livre;
+        }
+        else
+        {
+            MessageBox.Show($"Aucun livre trouvé avec l'ISBN {isbn}.", "Non trouvé", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
 }
