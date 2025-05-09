@@ -14,6 +14,7 @@ public class BibliothequeContext : DbContext
         public DbSet<Adherent> Adherents { get; set; } = null!;
         public DbSet<Emprunt> Emprunts { get; set; } = null!;
         public DbSet<Categorie> Categories { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,6 +47,24 @@ public class BibliothequeContext : DbContext
             // Index pour recherche rapide par nom et prénom d'adhérent
             modelBuilder.Entity<Adherent>()
                 .HasIndex(a => new { a.Nom, a.Prenom });
+
+            // Configuration de l'entité User
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Username).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Nom).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Prenom).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Role).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.PasswordHash).IsRequired();
+                entity.Property(e => e.DateCreation).IsRequired();
+                
+                // Add unique constraint for username
+                entity.HasIndex(e => e.Username).IsUnique();
+                // Add unique constraint for email
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
 
             base.OnModelCreating(modelBuilder);
         }

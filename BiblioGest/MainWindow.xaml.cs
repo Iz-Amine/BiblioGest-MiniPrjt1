@@ -91,4 +91,16 @@ public partial class MainWindow : Window
         loginWindow.Show();
         this.Close();
     }
+
+    private void NavigateToUsers(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            MainFrame.Navigate(new Pages.UsersPage());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erreur lors de la navigation : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
 }

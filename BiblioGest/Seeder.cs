@@ -9,6 +9,58 @@ namespace BiblioGest
     {
         public static void Seed(BibliothequeContext context)
         {
+            // Users
+            if (!context.Users.Any())
+            {
+                context.Users.AddRange(
+                    new User
+                    {
+                        Username = "admin",
+                        Nom = "Admin",
+                        Prenom = "System",
+                        Email = "admin@biblio.com",
+                        Role = "Administrateur",
+                        PasswordHash = "admin123", // Note: In production, this should be properly hashed
+                        DateCreation = DateTime.Now,
+                        EstActif = true
+                    },
+                    new User
+                    {
+                        Username = "biblio1",
+                        Nom = "Martin",
+                        Prenom = "Sophie",
+                        Email = "sophie.martin@biblio.com",
+                        Role = "Bibliothécaire",
+                        PasswordHash = "biblio123", // Note: In production, this should be properly hashed
+                        DateCreation = DateTime.Now,
+                        EstActif = true
+                    },
+                    new User
+                    {
+                        Username = "biblio2",
+                        Nom = "Dubois",
+                        Prenom = "Pierre",
+                        Email = "pierre.dubois@biblio.com",
+                        Role = "Bibliothécaire",
+                        PasswordHash = "biblio123", // Note: In production, this should be properly hashed
+                        DateCreation = DateTime.Now,
+                        EstActif = true
+                    },
+                    new User
+                    {
+                        Username = "admin2",
+                        Nom = "Leroy",
+                        Prenom = "Jean",
+                        Email = "jean.leroy@biblio.com",
+                        Role = "Administrateur",
+                        PasswordHash = "admin123", // Note: In production, this should be properly hashed
+                        DateCreation = DateTime.Now,
+                        EstActif = true
+                    }
+                );
+                context.SaveChanges();
+            }
+
             // Catégories
             if (!context.Categories.Any())
             {
