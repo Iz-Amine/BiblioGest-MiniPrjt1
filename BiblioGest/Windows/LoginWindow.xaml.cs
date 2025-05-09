@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Linq;
+using BiblioGest.Models;
 
 namespace BiblioGest.Windows
 {
@@ -14,17 +16,29 @@ namespace BiblioGest.Windows
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
 
-            // Authentification statique simple
-            if (username == "admin" && password == "admin")
+            // Recherche de l'utilisateur dans la base
+            var user = App.DbContext.Users.FirstOrDefault(u => u.Username == username);
+
+            if (user == null)
             {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
+                MessageBox.Show("Utilisateur inexistant.", "Erreur de connexion", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            // Vérification du mot de passe (ici, sans hash pour l'instant)
+            if (user.PasswordHash != password)
             {
-                MessageBox.Show("Identifiant ou mot de passe incorrect.", "Erreur de connexion", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Mot de passe incorrect.", "Erreur de connexion", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            // Connexion réussie
+            user.DerniereConnexion = System.DateTime.Now;
+            App.DbContext.SaveChanges();
+
+            MainWindow mainWindow = new MainWindow(user);
+            mainWindow.Show();
+            this.Close();
         }
     }
 } 

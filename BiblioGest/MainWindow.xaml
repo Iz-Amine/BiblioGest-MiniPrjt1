@@ -97,7 +97,7 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource NavButton}"
+                    <Button x:Name="BtnUsersNav" Style="{StaticResource NavButton}"
                             Click="NavigateToUsers">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="👤" FontSize="20" Margin="0,0,10,0"/>

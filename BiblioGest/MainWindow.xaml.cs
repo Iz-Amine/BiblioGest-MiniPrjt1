@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BiblioGest.Pages;
+using BiblioGest.Models;
 
 namespace BiblioGest;
 
@@ -18,11 +19,28 @@ namespace BiblioGest;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    private User _currentUser;
+
+    public MainWindow(User user)
     {
         InitializeComponent();
+        _currentUser = user;
+        UpdateNavbarForRole();
         // Naviguer vers la page du dashboard/statistiques par défaut
         NavigateToStatistiques(null, null);
+    }
+
+    private void UpdateNavbarForRole()
+    {
+        // Masquer le bouton de gestion des utilisateurs si non admin
+        if (_currentUser.Role != "Administrateur")
+        {
+            BtnUsersNav.Visibility = Visibility.Collapsed;
+        }
+        else
+        {
+            BtnUsersNav.Visibility = Visibility.Visible;
+        }
     }
 
     private void NavigateToLivres(object sender, RoutedEventArgs e)
