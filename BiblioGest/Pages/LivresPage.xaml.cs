@@ -142,9 +142,9 @@ public partial class LivresPage : Page
         }
     }
 
-    private void LivresGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void EditBook_Click(object sender, RoutedEventArgs e)
     {
-        if (LivresGrid.SelectedItem is Livre selectedLivre)
+        if (sender is Button btn && btn.Tag is Livre selectedLivre)
         {
             var window = new LivreEditWindow(selectedLivre)
             {
@@ -210,5 +210,23 @@ public partial class LivresPage : Page
             _currentPage++;
             LoadLivres();
         }
+    }
+
+    private void DetailBook_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is Livre selectedLivre)
+        {
+            var window = new LivreDetailWindow(selectedLivre)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            window.ShowDialog();
+        }
+    }
+
+    // Désactiver l'édition automatique sur sélection
+    private void LivresGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Ne rien faire ici pour éviter l'ouverture automatique de la fenêtre d'édition
     }
 }
