@@ -63,7 +63,7 @@
         </StackPanel>
 
         <!-- Liste des emprunts -->
-        <DataGrid Grid.Row="1" 
+        <DataGrid Grid.Row="2" 
                   x:Name="EmpruntsGrid"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"

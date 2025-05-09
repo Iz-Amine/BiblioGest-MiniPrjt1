@@ -27,7 +27,7 @@ public class Adherent
     
     public DateTime DateInscription { get; set; } = DateTime.Now;
     
-    // public string Statut { get; set; } = "Actif";
+    public string Statut { get; set; } = "Actif";
     
     // Navigation property pour les emprunts
     public virtual ICollection<Emprunt> Emprunts { get; set; } = new List<Emprunt>();

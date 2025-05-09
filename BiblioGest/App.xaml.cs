@@ -30,7 +30,7 @@ public partial class App : Application
                 MessageBox.Show($"Dossier de données créé : {dataFolder}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             
-            string dbPath = Path.Combine(dataFolder, "bibliotheque12.db");
+            string dbPath = Path.Combine(dataFolder, "bibliotheque13.db");
             Console.WriteLine(dbPath);
             string connectionString = $"Data Source={dbPath}";
 
@@ -40,7 +40,7 @@ public partial class App : Application
 
             DbContext = new BibliothequeContext(options);
             // // Appeler le seeder ici
-            // Seeder.Seed(DbContext);
+            Seeder.Seed(DbContext);
             // foreach (var adherent in DbContext.Adherents.Where(a => a.Statut == null || a.Statut == ""))
             // {
             //     adherent.Statut = "Actif";

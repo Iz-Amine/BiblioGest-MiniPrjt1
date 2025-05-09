@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Text.RegularExpressions;
 using BiblioGest.Models;
+using System.Windows.Controls;
 
 namespace BiblioGest.Windows;
 
@@ -36,6 +37,16 @@ public partial class AdherentEditWindow : Window
                           MessageBoxButton.OK, 
                           MessageBoxImage.Warning);
             return;
+        }
+
+        // Forcer la récupération du statut depuis le ComboBox
+        if (StatutComboBox.SelectedItem is ComboBoxItem item)
+        {
+            Adherent.Statut = item.Content.ToString();
+        }
+        else if (string.IsNullOrWhiteSpace(Adherent.Statut))
+        {
+            Adherent.Statut = "Actif";
         }
 
         // Validation de l'email

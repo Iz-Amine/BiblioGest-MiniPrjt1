@@ -78,7 +78,10 @@
 
                 <!-- Statut -->
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Statut :" VerticalAlignment="Center" Margin="0,0,10,10"/>
-                <ComboBox Grid.Row="5" Grid.Column="1" x:Name="StatutComboBox" SelectedValue="{Binding Adherent.Statut, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
+                <ComboBox Grid.Row="5" Grid.Column="1" x:Name="StatutComboBox"
+                          SelectedValue="{Binding Adherent.Statut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Content"
+                          Margin="0,0,0,10">
                     <ComboBoxItem Content="Actif"/>
                     <ComboBoxItem Content="Suspendu"/>
                     <ComboBoxItem Content="Radié"/>
