@@ -55,7 +55,7 @@
                            FontSize="28" 
                            FontWeight="Bold" 
                            Foreground="#111827"/>
-                <TextBlock Text="Visualisez les statistiques de votre bibliothèque en un coup d'œil" 
+                <TextBlock Text="Statistiques de la bibliothèque en un coup d'œil" 
                            FontSize="16" 
                            Foreground="#6B7280"
                            Margin="0,8,0,0"/>
@@ -64,6 +64,7 @@
         
         <!-- Contenu principal -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            
             <StackPanel>
                 <!-- Date de la dernière mise à jour -->
                 <TextBlock x:Name="DerniereMiseAJour" 
@@ -71,6 +72,29 @@
                            FontSize="14" 
                            Foreground="#6B7280"
                            Margin="10,0,0,20"/>
+                
+                <!-- Section Raccourcis -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,10">
+                    <Button x:Name="BtnNouvelEmprunt" Click="BtnNouvelEmprunt_Click" Padding="20,10" Background="#3B82F6" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" FontSize="18" Margin="0,0,8,0"/>
+                            <TextBlock Text="Nouvel Emprunt" FontSize="16"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnNouveauLivre" Click="BtnNouveauLivre_Click" Padding="20,10" Background="#10B981" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📚" FontSize="18" Margin="0,0,8,0"/>
+                            <TextBlock Text="Nouveau Livre" FontSize="16"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnNouvelAdherent" Click="BtnNouvelAdherent_Click" Padding="20,10" Background="#6366F1" Foreground="White" FontWeight="SemiBold" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👤" FontSize="18" Margin="0,0,8,0"/>
+                            <TextBlock Text="Nouvel Adhérent" FontSize="16"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Separator Margin="0,10,0,10"/>
                 
                 <!-- Première rangée de statistiques -->
                 <UniformGrid Columns="3" Rows="1">
@@ -172,26 +196,77 @@
                         </Grid>
                     </Grid>
                 </Border>
+                
+                <Separator Margin="0,10,0,10"/>
+                <!-- Section Dernières activités -->
+                <Separator Margin="0,10,0,10"/>
+<!-- Section Dernières activités -->
+<StackPanel Margin="0,10,0,0">
+    <TextBlock Text="Dernières activités" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10"/>
+    <Border Background="#FFF" CornerRadius="8" Padding="15" BorderBrush="#E5E7EB" BorderThickness="1">
+        <ListView x:Name="ListeDernieresActivites" 
+                  BorderThickness="0"
+                  Background="Transparent"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  Height="300">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#4B5563" 
+                                       FontSize="14"
+                                       Margin="0,10,0,5"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,2"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#F9FAFB" CornerRadius="6" Padding="10" Margin="0,2,0,2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Icône -->
+                            <TextBlock Grid.Column="0" Text="{Binding Icone}" FontSize="18" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            
+                            <!-- Description -->
+                            <TextBlock Grid.Column="1" Text="{Binding Description}" FontSize="14" VerticalAlignment="Center"/>
+                            
+                            <!-- Heure -->
+                            <TextBlock Grid.Column="2" Text="{Binding HeureFormatee}" FontSize="12" Foreground="#6B7280" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Border>
+</StackPanel>
             </StackPanel>
         </ScrollViewer>
-        
-        <!-- Bouton de rafraîchissement -->
-        <Button Grid.Row="1" 
-                Content="Rafraîchir" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Bottom"
-                Margin="0,0,30,30"
-                Padding="15,8"
-                Click="RefreshButton_Click"
-                Background="#3B82F6"
-                Foreground="White"
-                BorderThickness="0"
-                FontWeight="SemiBold">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4"/>
-                </Style>
-            </Button.Resources>
-        </Button>
     </Grid>
 </Page>

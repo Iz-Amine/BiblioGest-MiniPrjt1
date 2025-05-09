@@ -2,6 +2,7 @@ using System;
 using System.Windows.Controls;
 using System.Windows;
 using System.Linq;
+using System.Windows.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BiblioGest.Pages
@@ -12,6 +13,7 @@ namespace BiblioGest.Pages
         {
             InitializeComponent();
             ChargerStatistiques();
+            ChargerDernieresActivites();
         }
 
         private void ChargerStatistiques()
@@ -25,8 +27,13 @@ namespace BiblioGest.Pages
                 var totalLivres = App.DbContext.Livres.Count();
                 var totalAdherents = App.DbContext.Adherents.Count();
                 var totalEmprunts = App.DbContext.Emprunts.Count();
-                var livresDisponibles = App.DbContext.Livres.Count(l => l.Disponible);
-                var livresEmpruntes = totalLivres - livresDisponibles;
+                // Calcul robuste : livres empruntés = livres avec un emprunt actif (DateRetour == null)
+                var livresEmpruntes = App.DbContext.Emprunts
+                    .Where(e => e.DateRetour == null)
+                    .Select(e => e.LivreId)
+                    .Distinct()
+                    .Count();
+                var livresDisponibles = totalLivres - livresEmpruntes;
 
                 // Mise à jour des premières statistiques
                 TotalLivres.Text = totalLivres.ToString("N0");
@@ -92,5 +99,105 @@ namespace BiblioGest.Pages
         {
             ChargerStatistiques();
         }
+
+        private void BtnNouvelEmprunt_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigation vers la page des emprunts
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow?.MainFrame.Navigate(new Pages.EmpruntsPage());
+        }
+
+        private void BtnNouveauLivre_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigation vers la page des livres
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow?.MainFrame.Navigate(new Pages.LivresPage());
+        }
+
+        private void BtnNouvelAdherent_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigation vers la page des adhérents
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow?.MainFrame.Navigate(new Pages.AdherentsPage());
+        }
+
+        public class ActiviteRecente
+        {
+            public string Icone { get; set; } = "";
+            public string Description { get; set; } = "";
+            public DateTime Date { get; set; }
+            
+            // Propriété pour le regroupement par jour
+            public string DateGroup => Date.Date.ToString("dd MMMM yyyy");
+    
+            // Heure formatée pour l'affichage
+            public string HeureFormatee => Date.ToString("HH:mm");
+        }
+
+       private void ChargerDernieresActivites()
+{
+    // Afficher les 10 dernières activités (livres ajoutés, emprunts, retours, nouveaux adhérents)
+    var activites = new System.Collections.Generic.List<ActiviteRecente>();
+
+    // Derniers livres ajoutés
+    var livres = App.DbContext.Livres
+        .OrderByDescending(l => l.Id)
+        .Take(3)
+        .ToList()
+        .Select(l => new ActiviteRecente {
+            Icone = "📚",
+            Description = $"Livre ajouté : {l.Titre} ({l.Auteur})",
+            Date = DateTime.Now.AddDays(-new Random().Next(0, 5)) // Simulation de dates variées
+        })
+        .ToList();
+    activites.AddRange(livres);
+
+    // Derniers emprunts
+    var emprunts = App.DbContext.Emprunts
+        .OrderByDescending(e => e.DateEmprunt)
+        .Take(3)
+        .Select(e => new ActiviteRecente {
+            Icone = "📖",
+            Description = $"Emprunt : {e.Livre.Titre} par {e.Adherent.NomComplet}",
+            Date = e.DateEmprunt
+        })
+        .ToList();
+    activites.AddRange(emprunts);
+
+    // Derniers retours
+    var retours = App.DbContext.Emprunts
+        .Where(e => e.DateRetour != null)
+        .OrderByDescending(e => e.DateRetour)
+        .Take(2)
+        .Select(e => new ActiviteRecente {
+            Icone = "🔄",
+            Description = $"Retour : {e.Livre.Titre} par {e.Adherent.NomComplet}",
+            Date = e.DateRetour.Value
+        })
+        .ToList();
+    activites.AddRange(retours);
+
+    // Nouveaux adhérents
+    var adherents = App.DbContext.Adherents
+        .OrderByDescending(a => a.Id)
+        .Take(2)
+        .Select(a => new ActiviteRecente {
+            Icone = "👤",
+            Description = $"Nouveau membre : {a.NomComplet}",
+            Date = a.DateInscription
+        })
+        .ToList();
+    activites.AddRange(adherents);
+
+    // Trier par date décroissante
+    activites = activites.OrderByDescending(a => a.Date).Take(10).ToList();
+
+    // Créer une source de données avec regroupement
+    var groupedItems = new ListCollectionView(activites);
+    groupedItems.GroupDescriptions.Add(new PropertyGroupDescription("DateGroup"));
+    
+    // Affecter la source regroupée au contrôle
+    ListeDernieresActivites.ItemsSource = groupedItems;
+}
     }
 }

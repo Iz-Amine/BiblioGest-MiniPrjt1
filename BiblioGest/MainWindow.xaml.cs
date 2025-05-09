@@ -21,8 +21,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        // Naviguer vers la page des livres par défaut
-        NavigateToLivres(null, null);
+        // Naviguer vers la page du dashboard/statistiques par défaut
+        NavigateToStatistiques(null, null);
     }
 
     private void NavigateToLivres(object sender, RoutedEventArgs e)

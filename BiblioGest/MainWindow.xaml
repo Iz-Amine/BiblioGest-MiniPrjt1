@@ -57,10 +57,10 @@
                 <!-- Navigation Buttons -->
                 <StackPanel>
                     <Button Style="{StaticResource NavButton}"
-                            Click="NavigateToLivres">
+                            Click="NavigateToStatistiques">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📚" FontSize="20" Margin="0,0,10,0"/>
-                            <TextBlock Text="Gestion des Livres" Foreground="White" FontSize="16"/>
+                            <TextBlock Text="📊" FontSize="20" Margin="0,0,10,0"/>
+                            <TextBlock Text="Tableau de Bord" Foreground="White" FontSize="16"/>
                         </StackPanel>
                     </Button>
 
@@ -73,10 +73,10 @@
                     </Button>
 
                     <Button Style="{StaticResource NavButton}"
-                            Click="NavigateToEmprunts">
+                            Click="NavigateToLivres">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📚" FontSize="20" Margin="0,0,10,0"/>
-                            <TextBlock Text="Gestion des Emprunts" Foreground="White" FontSize="16"/>
+                            <TextBlock Text="Gestion des Livres" Foreground="White" FontSize="16"/>
                         </StackPanel>
                     </Button>
 
@@ -89,10 +89,10 @@
                     </Button>
 
                     <Button Style="{StaticResource NavButton}"
-                            Click="NavigateToStatistiques">
+                            Click="NavigateToEmprunts">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📊" FontSize="20" Margin="0,0,10,0"/>
-                            <TextBlock Text="Statistiques" Foreground="White" FontSize="16"/>
+                            <TextBlock Text="📚" FontSize="20" Margin="0,0,10,0"/>
+                            <TextBlock Text="Gestion des Emprunts" Foreground="White" FontSize="16"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
