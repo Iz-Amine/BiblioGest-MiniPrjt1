@@ -39,6 +39,9 @@ public partial class App : Application
                 .Options;
 
             DbContext = new BibliothequeContext(options);
+            // // Appeler le seeder ici
+            // Seeder.Seed(DbContext);
+
             DbContext.Database.EnsureCreated();
 
             MessageBox.Show($"Base de données initialisée avec succès : {dbPath}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);

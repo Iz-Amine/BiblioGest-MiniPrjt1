@@ -9,19 +9,42 @@ namespace BiblioGest.Pages;
 
 public partial class CategoriesPage : Page
 {
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalPages = 1;
+
     public CategoriesPage()
     {
         InitializeComponent();
         LoadCategories();
     }
 
+    private void UpdatePagination(int totalItems)
+    {
+        _totalPages = (int)Math.Ceiling((double)totalItems / _pageSize);
+        if (_currentPage > _totalPages) _currentPage = _totalPages;
+        if (_currentPage < 1) _currentPage = 1;
+        TxtPageInfo.Text = $"Page {_currentPage}/{(_totalPages == 0 ? 1 : _totalPages)}";
+        BtnPrevPage.IsEnabled = _currentPage > 1;
+        BtnNextPage.IsEnabled = _currentPage < _totalPages;
+    }
+
     private void LoadCategories()
     {
         try
         {
-            var categories = App.DbContext.Categories
-                .OrderBy(c => c.Nom)
-                .ToList();
+            var query = App.DbContext.Categories.AsQueryable();
+            if (!string.IsNullOrEmpty(SearchBox.Text))
+            {
+                var searchText = SearchBox.Text.ToLower();
+                query = query.Where(c => c.Nom.ToLower().Contains(searchText) || (c.Description != null && c.Description.ToLower().Contains(searchText)));
+            }
+            int totalItems = query.Count();
+            UpdatePagination(totalItems);
+            var categories = query.OrderBy(c => c.Nom)
+                                  .Skip((_currentPage - 1) * _pageSize)
+                                  .Take(_pageSize)
+                                  .ToList();
             CategoriesGrid.ItemsSource = categories;
         }
         catch (Exception ex)
@@ -135,6 +158,24 @@ public partial class CategoriesPage : Page
                     MessageBox.Show($"Erreur lors de la suppression de la catégorie : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+    }
+
+    private void BtnPrevPage_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            LoadCategories();
+        }
+    }
+
+    private void BtnNextPage_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPage < _totalPages)
+        {
+            _currentPage++;
+            LoadCategories();
         }
     }
 } 

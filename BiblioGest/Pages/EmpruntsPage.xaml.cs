@@ -10,22 +10,47 @@ namespace BiblioGest.Pages;
 
 public partial class EmpruntsPage : Page
 {
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalPages = 1;
+
     public EmpruntsPage()
     {
         InitializeComponent();
         LoadEmprunts();
     }
 
+    private void UpdatePagination(int totalItems)
+    {
+        _totalPages = (int)Math.Ceiling((double)totalItems / _pageSize);
+        if (_currentPage > _totalPages) _currentPage = _totalPages;
+        if (_currentPage < 1) _currentPage = 1;
+        TxtPageInfo.Text = $"Page {_currentPage}/{(_totalPages == 0 ? 1 : _totalPages)}";
+        BtnPrevPage.IsEnabled = _currentPage > 1;
+        BtnNextPage.IsEnabled = _currentPage < _totalPages;
+    }
+
     private void LoadEmprunts()
     {
         try
         {
-            var emprunts = App.DbContext.Emprunts
+            var query = App.DbContext.Emprunts
                 .Include(e => e.Livre)
                 .Include(e => e.Adherent)
-                .OrderByDescending(e => e.DateEmprunt)
-                .ToList();
-            
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(SearchBox.Text))
+            {
+                var searchText = SearchBox.Text.ToLower();
+                query = query.Where(e => (e.Livre != null && e.Livre.Titre != null && e.Livre.Titre.ToLower().Contains(searchText)) ||
+                                        (e.Adherent != null && e.Adherent.Nom != null && e.Adherent.Nom.ToLower().Contains(searchText)) ||
+                                        (e.Adherent != null && e.Adherent.Prenom != null && e.Adherent.Prenom.ToLower().Contains(searchText)));
+            }
+            int totalItems = query.Count();
+            UpdatePagination(totalItems);
+            var emprunts = query.OrderByDescending(e => e.DateEmprunt)
+                                .Skip((_currentPage - 1) * _pageSize)
+                                .Take(_pageSize)
+                                .ToList();
             EmpruntsGrid.ItemsSource = emprunts;
         }
         catch (Exception ex)
@@ -167,6 +192,24 @@ public partial class EmpruntsPage : Page
                     MessageBox.Show($"Erreur lors de la suppression de l'emprunt : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+    }
+
+    private void BtnPrevPage_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            LoadEmprunts();
+        }
+    }
+
+    private void BtnNextPage_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPage < _totalPages)
+        {
+            _currentPage++;
+            LoadEmprunts();
         }
     }
 }

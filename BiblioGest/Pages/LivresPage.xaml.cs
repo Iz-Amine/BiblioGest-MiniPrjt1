@@ -13,6 +13,9 @@ public partial class LivresPage : Page
 {
     private string _searchText = string.Empty;
     private int? _selectedCategoryId = null;
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalPages = 1;
     
     public LivresPage()
     {
@@ -50,41 +53,53 @@ public partial class LivresPage : Page
         }
     }
 
+    private void UpdatePagination(int totalItems)
+    {
+        _totalPages = (int)Math.Ceiling((double)totalItems / _pageSize);
+        if (_currentPage > _totalPages) _currentPage = _totalPages;
+        if (_currentPage < 1) _currentPage = 1;
+        TxtPageInfo.Text = $"Page {_currentPage}/{(_totalPages == 0 ? 1 : _totalPages)}";
+        BtnPrevPage.IsEnabled = _currentPage > 1;
+        BtnNextPage.IsEnabled = _currentPage < _totalPages;
+    }
+
     private void LoadLivres()
     {
         try
         {
-            // Construire la requête en fonction des filtres
             var query = App.DbContext.Livres
                 .Include(l => l.Categorie)
                 .AsQueryable();
 
-            // Appliquer le filtre de recherche par texte
             if (!string.IsNullOrEmpty(_searchText))
             {
-                query = query.Where(l => 
+                query = query.Where(l =>
                     l.Titre.ToLower().Contains(_searchText) ||
                     l.Auteur.ToLower().Contains(_searchText) ||
                     l.ISBN.Contains(_searchText));
             }
 
-            // Appliquer le filtre par catégorie
             if (_selectedCategoryId.HasValue && _selectedCategoryId.Value > 0)
             {
                 query = query.Where(l => l.CategorieId == _selectedCategoryId.Value);
             }
 
-            // Trier et exécuter la requête
-            var livres = query.OrderBy(l => l.Titre).ToList();
-            
-            // Mettre à jour la source de données de la grille
+            int totalItems = query.Count();
+            UpdatePagination(totalItems);
+
+            var livres = query
+                .OrderBy(l => l.Titre)
+                .Skip((_currentPage - 1) * _pageSize)
+                .Take(_pageSize)
+                .ToList();
+
             LivresGrid.ItemsSource = livres;
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Erreur lors du chargement des livres : {ex.Message}", 
-                          "Erreur", 
-                          MessageBoxButton.OK, 
+            MessageBox.Show($"Erreur lors du chargement des livres : {ex.Message}",
+                          "Erreur",
+                          MessageBoxButton.OK,
                           MessageBoxImage.Error);
         }
     }
@@ -176,6 +191,24 @@ public partial class LivresPage : Page
                     MessageBox.Show($"Erreur lors de la suppression du livre : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+    }
+
+    private void BtnPrevPage_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            LoadLivres();
+        }
+    }
+
+    private void BtnNextPage_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPage < _totalPages)
+        {
+            _currentPage++;
+            LoadLivres();
         }
     }
 }
