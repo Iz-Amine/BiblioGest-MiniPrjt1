@@ -22,7 +22,7 @@ BiblioGest est développée avec les technologies Microsoft modernes :
 - **WPF** (Windows Presentation Foundation) pour l'interface graphique
 - **Architecture MVVM** (Model-View-ViewModel) pour une séparation claire des responsabilités
 - **Entity Framework Core** pour l'accès aux données et leur persistance
-- **Compatible avec plusieurs SGBD** : SQL Server, PostgreSQL, SQLite, MySQL
+- **SQLite** comme Base de donnee
 
 ## Interface utilisateur
 
