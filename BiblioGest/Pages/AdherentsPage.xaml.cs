@@ -92,9 +92,9 @@ public partial class AdherentsPage : Page
         }
     }
 
-    private void AdherentsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void EditAdherent_Click(object sender, RoutedEventArgs e)
     {
-        if (AdherentsGrid.SelectedItem is Adherent selectedAdherent)
+        if (sender is Button btn && btn.Tag is Adherent selectedAdherent)
         {
             var window = new AdherentEditWindow(selectedAdherent)
             {
@@ -115,6 +115,11 @@ public partial class AdherentsPage : Page
                 }
             }
         }
+    }
+
+    private void AdherentsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Ne rien faire ici pour éviter l'ouverture automatique de la fenêtre d'édition
     }
 
     private void DeleteAdherent_Click(object sender, RoutedEventArgs e)
@@ -159,6 +164,18 @@ public partial class AdherentsPage : Page
         {
             _currentPage++;
             LoadAdherents();
+        }
+    }
+
+    private void DetailAdherent_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is Adherent selectedAdherent)
+        {
+            var window = new AdherentDetailWindow(selectedAdherent)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            window.ShowDialog();
         }
     }
 } 

@@ -1,0 +1,129 @@
+<Window x:Class="BiblioGest.Windows.AdherentDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Détail de l'Adhérent" Height="500" Width="700" WindowStartupLocation="CenterOwner">
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Détail de l'Adhérent" FontSize="26" FontWeight="Bold" Margin="0,0,0,20"/>
+        <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#E5E7EB" Padding="0,0,0,15" Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Colonne 1 -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Nom :" FontWeight="SemiBold" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Adherent.Nom}" VerticalAlignment="Top" Margin="0,0,15,10"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Prénom :" FontWeight="SemiBold" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Adherent.Prenom}" VerticalAlignment="Top" Margin="0,0,15,10"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Email :" FontWeight="SemiBold" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Adherent.Email}" VerticalAlignment="Top" Margin="0,0,15,10"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Téléphone :" FontWeight="SemiBold" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Adherent.Telephone}" VerticalAlignment="Top" Margin="0,0,15,10"/>
+                </Grid>
+                <!-- Colonne 2 -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Date d'inscription :" FontWeight="SemiBold" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Adherent.DateInscription, StringFormat=dd/MM/yyyy}" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Statut :" FontWeight="SemiBold" VerticalAlignment="Top" Margin="0,0,0,10"/>
+                    <Border Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="0,0,0,10" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#3B82F6"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Adherent.Statut}" Value="Actif">
+                                        <Setter Property="Background" Value="#3B82F6"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Adherent.Statut}" Value="Suspendu">
+                                        <Setter Property="Background" Value="#F59E42"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Adherent.Statut}" Value="Radié">
+                                        <Setter Property="Background" Value="#EF4444"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="{Binding Adherent.Statut}" Foreground="White" FontWeight="Medium"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+        <!-- Historique des emprunts -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Historique des emprunts" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            <DataGrid Grid.Row="1" x:Name="EmpruntsGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                      BorderThickness="1" BorderBrush="#E5E7EB"
+                      RowBackground="White" AlternatingRowBackground="#F9FAFB"
+                      VerticalGridLinesBrush="#E5E7EB" HorizontalGridLinesBrush="#E5E7EB"
+                      HeadersVisibility="Column">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F3F4F6"/>
+                        <Setter Property="Padding" Value="10,8"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Livre" Binding="{Binding Livre.Titre}" Width="*"/>
+                    <DataGridTextColumn Header="Date d'emprunt" Binding="{Binding DateEmprunt, StringFormat=dd/MM/yyyy}" Width="120"/>
+                    <DataGridTextColumn Header="Date de retour" Binding="{Binding DateRetour, StringFormat=dd/MM/yyyy}" Width="120"/>
+                    <DataGridTemplateColumn Header="Statut" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="4" Padding="8,3" Margin="5,2" HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#10B981"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Statut}" Value="En retard">
+                                                    <Setter Property="Background" Value="#EF4444"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Statut}" Value="En cours">
+                                                    <Setter Property="Background" Value="#3B82F6"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding Statut}" Foreground="White" FontWeight="Medium"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <!-- Bouton de fermeture -->
+        <Button Grid.Row="3" Content="Fermer" HorizontalAlignment="Right" Margin="0,15,0,0" Padding="15,8" 
+                Background="#F3F4F6" Foreground="#374151" BorderBrush="#D1D5DB" BorderThickness="1"
+                FontWeight="SemiBold" Click="FermerButton_Click"/>
+    </Grid>
+</Window> 

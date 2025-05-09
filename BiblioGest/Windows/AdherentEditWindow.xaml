@@ -32,6 +32,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Nom -->
@@ -73,6 +75,14 @@
                          x:Name="TelephoneTextBox"
                          Text="{Binding Adherent.Telephone, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0,0,0,10"/>
+
+                <!-- Statut -->
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Statut :" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                <ComboBox Grid.Row="5" Grid.Column="1" x:Name="StatutComboBox" SelectedValue="{Binding Adherent.Statut, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
+                    <ComboBoxItem Content="Actif"/>
+                    <ComboBoxItem Content="Suspendu"/>
+                    <ComboBoxItem Content="Radié"/>
+                </ComboBox>
             </Grid>
         </StackPanel>
 

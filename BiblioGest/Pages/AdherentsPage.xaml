@@ -64,6 +64,21 @@
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
                 <DataGridTextColumn Header="Téléphone" Binding="{Binding Telephone}" Width="120"/>
                 <DataGridTextColumn Header="Date d'inscription" Binding="{Binding DateInscription, StringFormat=d}" Width="120"/>
+                <DataGridTextColumn Header="Statut" Binding="{Binding Statut}" Width="100"/>
+                <DataGridTemplateColumn Header="Détail" Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Détail" Click="DetailAdherent_Click" Tag="{Binding}" Padding="5,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Modifier" Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Modifier" Click="EditAdherent_Click" Tag="{Binding}" Padding="5,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <!-- Pagination -->

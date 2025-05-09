@@ -41,6 +41,11 @@ public partial class App : Application
             DbContext = new BibliothequeContext(options);
             // // Appeler le seeder ici
             // Seeder.Seed(DbContext);
+            // foreach (var adherent in DbContext.Adherents.Where(a => a.Statut == null || a.Statut == ""))
+            // {
+            //     adherent.Statut = "Actif";
+            // }
+            // DbContext.SaveChanges();
 
             DbContext.Database.EnsureCreated();
 
